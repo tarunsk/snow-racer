@@ -1,0 +1,215 @@
+html, body {
+  height: 100%;
+}
+
+.menu-item {
+  width: 20%;
+  height: 300px;
+  margin: 25px;
+}
+
+.menu-item {
+
+}
+
+.game-screen img {
+  max-height: 500px;
+  max-width: 500px;
+}
+
+.game-screen {
+  height: 80%;
+}
+
+.transparent-card img {
+  display: block;
+}
+
+.track-thumbnail {
+  text-align: center;
+  padding: 5%;
+}
+
+.track-thumbnail svg {
+  height: fit-content;
+}
+
+.outer-track {
+  position: absolute;
+  margin-top: 50%;
+  margin-left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.inner-track {
+  position: absolute;
+  margin-top: 50%;
+  margin-left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.racetrack {
+  max-height: 80%;
+  max-width: 80%;
+  width: 80%;
+}
+
+.racetrack svg {
+  width: 100%;
+  height: 100%;
+}
+
+.opacity-0 {
+  opacity:0!important;
+}
+.opacity-1 {
+  opacity:0.2!important;
+}
+.opacity-2 {
+  opacity:0.4!important;
+}
+.opacity-3 {
+  opacity:0.6!important;
+}
+.opacity-4 {
+  opacity:.8!important;
+}
+.opacity-5 {
+  opacity:1!important;
+}
+
+
+/* From https://www.w3schools.com/howto/howto_css_image_overlay_icon.asp */
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .3s ease;
+  background-color: blue;
+}
+
+/* When you mouse over the container, fade in the overlay icon*/
+.menu-item:hover .overlay {
+  opacity: 1;
+}
+
+/* The icon inside the overlay is positioned in the middle vertically and horizontally */
+.icon {
+  color: white;
+  font-size: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.bg {
+  background-image: url('../assets/img/background.jpg');
+  min-width: 350px;
+  height: 100%;
+}
+/* Main Containers */
+.outer-container {
+  height: 600px;
+  width: 800px;
+  background: #eee;
+  border: 5px solid #ccc;
+}
+.game-window {
+  height: 100%;
+  width: 500px;
+  background: white;
+  border-right: 3px solid #53f;
+  float: left;
+  position: relative;
+}
+#actualGame{
+
+}
+.status-window {
+  height: 100%;
+  width: 297px;
+  background: #feb;
+  float: right;
+  position: relative;
+  z-index: 3;
+}
+
+/* Scenery */
+#paradeRoute {
+  width: 100%;
+  height: 100px;
+  background-color: #dedede;
+  position: absolute;
+  top: 200px;
+}
+#dottedLine {
+  width: 100%;
+  height: 50px;
+  position: absolute;
+  border-bottom: 1px dashed white;
+}
+
+/* Game Objects */
+#racer img {
+  position: absolute;
+  height: 50px;
+  width: 50px;
+}
+
+.paradeFloat {
+  position: absolute;
+  top: 10px;
+}
+.throwingItem-beads {
+  width: 40px;
+  height: 40px;
+}
+.throwingItem-candy{
+  width: 46px;
+  height: 40px;
+}
+#paradeFloat1 {
+  left: -300px;
+}
+#paradeFloat2 {
+  left: -150px;
+}
+.throwingItem {
+  position: absolute;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background-color: inherit;
+}
+.beads img {
+  width: 40px;
+  height: 40px;
+}
+.candy img {
+  width: 46px;
+  height: 40px;
+}
+
+.splash-screen {
+  display: table-cell;
+  font-size: 40px;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
+  font-style: italic;
+  width: 500px;
+  height: 600px;
+}
+
+.settings {
+  margin-top: 25px;
+  width: 100%;
+}
