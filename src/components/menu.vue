@@ -24,7 +24,7 @@ export default {
         <h5 class="card-title">{{option.name}}</h5>
     </div>
     <div class="overlay">
-        <a v-on:click="$emit('chosen-option', 'option.svg')" class="icon">
+        <a v-on:click="$emit('chosen-option', option.svg)" class="icon">
             <i class="fa fa-play"></i>
         </a>
     </div>

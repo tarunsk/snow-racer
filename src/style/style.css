@@ -2,6 +2,24 @@ html, body {
   height: 100%;
 }
 
+.racetrack {
+  /* position: absolute; */
+}
+
+.racetrack svg {
+  /* position: absolute; */
+  /* text-align: center; */
+}
+
+.avatar {
+  position: absolute;
+}
+
+.avatar svg {
+  position: absolute;
+  height: 100px;
+}
+
 .menu-item {
   width: 20%;
   height: 300px;
@@ -48,11 +66,11 @@ html, body {
   transform: translate(-50%,-50%);
 }
 
-.racetrack {
+/* .racetrack {
   max-height: 80%;
   max-width: 80%;
   width: 80%;
-}
+} */
 
 .racetrack svg {
   width: 100%;

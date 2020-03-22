@@ -25,8 +25,9 @@ export default {
       this.chosenTrack = value;
     },
     setChosenIcon(value) {
-      this.chosenTrack = value;
+      this.chosenIcon = value;
       this.renderGame = true;
+      console.log(this.renderGame);
     }
   },
 }
@@ -38,12 +39,12 @@ export default {
     <div class="row h-100 w-100 my-auto mx-auto track-select" v-if="menuSelect && (chosenTrack === null)">
       <Menu v-for="track in Tracks.options" v-bind:key="track.id" v-bind:option="track" v-on:chosen-option="setChosenTrack"/>
     </div>
-    <div class="row h-100 w-100 my-auto mx-auto track-select" v-if="menuSelect && (chosenTrack !== null) && (chosenIcon === null)">
+    <div class="row h-100 w-100 my-auto mx-auto track-select" v-if="menuSelect && !renderGame">
       <Menu v-for="icon in Icons.options" v-bind:key="icon.id" v-bind:option="icon" v-on:chosen-option="setChosenIcon"/>
     </div>
-    <div v-if="renderGame === true">
-      <div v-html="chosenTrack" />
-      <div v-html="chosenIcon" />
+    <div class="h-100" v-if="renderGame === true">
+      <div class="racetrack h-100 mx-auto my-auto" v-html="chosenTrack" />
+      <div class="avatar h-25" v-html="chosenIcon" />
     </div>
   </div>
 </template>
