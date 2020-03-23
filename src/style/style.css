@@ -26,6 +26,13 @@ html, body {
   bottom: 100%;
 }
 
+.obstacle img {
+  width: 25%;
+  /* height: 10%; */
+  position: absolute;
+  top: 0px;
+}
+
 .game-panel {
   width: 65%;
   margin-left: 5%;
