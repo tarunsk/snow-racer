@@ -16,31 +16,36 @@ export default {
     return {
       durations: [
         {
-          "id": 0,
-          "name": "0:30",
-          "img": null
+          id: 0,
+          name: "0:30",
+          value: "0:30",
+          img: false
         },
         {
-          "id": 1,
-          "name": "1:00",
-          "img": null
+          id: 1,
+          name: "1:00",
+          value: "1:00",
+          img: false
         },
         {
-          "id": 2,
-          "name": "5:00",
-          "img": null
+          id: 2,
+          name: "5:00",
+          value: "5:00",
+          img: false
         }
       ],
       icons: [
         {
           "id": 1,
           "name": "Toboggan",
-          "img": require("@/assets/img/toboggan.png")
+          "value": require("@/assets/img/toboggan.png"),
+          "img": true
         },
         {
           "id": 2,
           "name": "Spin",
-          "img": require("@/assets/img/spin.png")
+          "value": require("@/assets/img/spin.png"),
+          "img": "true"
         }
       ],
       menuSelect: false,
@@ -59,29 +64,6 @@ export default {
       this.chosenIcon = value;
       this.renderGame = true;
     },
-    handleKeyPress: function (e) {
-      const upArrow = 38;
-      const downArrow = 40;
-      const leftArrow = 37;
-      const rightArrow = 39;
-      const keyCode = e.keyCode;
-      if (keyCode === upArrow) {
-        console.log("moving forward");
-        this.racerXpos += 10;
-      }
-      if (keyCode === downArrow) {
-        console.log("moving backward");
-        this.racerXpos -= 10;
-      }
-      if (keyCode === rightArrow) {
-        console.log("turning right");
-        this.racerYpos += 10;
-      }
-      if (keyCode === leftArrow) {
-        console.log("turning left");
-        this.racerYpos -= 10;
-      }
-    }
   },
   mounted: function () {
     // add an event listener for keypress
@@ -99,7 +81,7 @@ export default {
     <div class="row h-100 w-100 my-auto mx-auto track-select" v-if="menuSelect && !renderGame && chosenDuration !== null">
       <Menu v-for="icon in icons" v-bind:key="icon.id" v-bind:option="icon" v-on:chosen-option="setChosenIcon"/>
     </div>
-    <GameScreen v-if="renderGame" v-bind:duration="chosenDuration" />
+    <GameScreen v-if="renderGame" v-bind:duration="chosenDuration" v-bind:icon="chosenIcon"/>
   </div>
 </template>
 
