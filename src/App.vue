@@ -1,30 +1,59 @@
 <script>
 import Landing from './components/landing.vue'
 import Menu from './components/menu.vue'
-import Tracks from './assets/tracks.json'
-import Icons from './assets/icons.json'
+import GameScreen from './components/gamescreen.vue'
+// import Durations from './assets/durations.json'
+// import Icons from './assets/icons.json'
 
 export default {
   name: 'App',
   components: {
     Landing,
-    Menu
+    Menu,
+    GameScreen
   },
   data: function() {
     return {
-      Tracks,
-      Icons,
+      durations: [
+        {
+          "id": 0,
+          "name": "0:30",
+          "img": null
+        },
+        {
+          "id": 1,
+          "name": "1:00",
+          "img": null
+        },
+        {
+          "id": 2,
+          "name": "5:00",
+          "img": null
+        }
+      ],
+      icons: [
+        {
+          "id": 1,
+          "name": "Toboggan",
+          "img": require("@/assets/img/toboggan.png")
+        },
+        {
+          "id": 2,
+          "name": "Spin",
+          "img": require("@/assets/img/spin.png")
+        }
+      ],
       menuSelect: false,
       renderGame: false,
-      chosenTrack: null,
+      chosenDuration: null,
       chosenIcon: null,
       racerXpos: 0,
       racerYpos: 0,
     }
   },
   methods: {
-    setChosenTrack(value) {
-      this.chosenTrack = value;
+    setDuration(value) {
+      this.chosenDuration = value;
     },
     setChosenIcon(value) {
       this.chosenIcon = value;
@@ -63,17 +92,14 @@ export default {
 
 <template>
   <div ref="app" id="app" class="h-100 bg">
-    <Landing ref='landing' v-if="!menuSelect" v-on:play-now="menuSelect=true"/>
-    <div class="row h-100 w-100 my-auto mx-auto track-select" v-if="menuSelect && (chosenTrack === null)">
-      <Menu v-for="track in Tracks.options" v-bind:key="track.id" v-bind:option="track" v-on:chosen-option="setChosenTrack"/>
+    <Landing class="h-100" v-if="!menuSelect" v-on:play-now="menuSelect=true"/>
+    <div class="row h-100 w-100 my-auto mx-auto track-select" v-if="menuSelect && (chosenDuration === null)">
+      <Menu v-for="duration in durations" v-bind:key="duration.id" v-bind:option="duration" v-on:chosen-option="setDuration"/>
     </div>
-    <div class="row h-100 w-100 my-auto mx-auto track-select" v-if="menuSelect && !renderGame">
-      <Menu v-for="icon in Icons.options" v-bind:key="icon.id" v-bind:option="icon" v-on:chosen-option="setChosenIcon"/>
+    <div class="row h-100 w-100 my-auto mx-auto track-select" v-if="menuSelect && !renderGame && chosenDuration !== null">
+      <Menu v-for="icon in icons" v-bind:key="icon.id" v-bind:option="icon" v-on:chosen-option="setChosenIcon"/>
     </div>
-    <div class="h-100" v-if="renderGame === true">
-      <div class="racetrack h-100 w-100 mx-auto my-auto" v-html="chosenTrack " />
-      <div class="avatar" v-bind:style="{ top: this.racerYpos + 'px', left: this.racerXpos + 'px'}" v-html="chosenIcon" />
-    </div>
+    <GameScreen v-if="renderGame" v-bind:duration="chosenDuration" />
   </div>
 </template>
 

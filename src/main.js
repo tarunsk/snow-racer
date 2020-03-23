@@ -6,6 +6,7 @@ import '@fortawesome/fontawesome-free/js/all.js'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 require('./style/style.css')
+require('./assets/img/toboggan.png')
 
 Vue.config.productionTip = false
 
