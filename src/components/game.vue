@@ -1,4 +1,6 @@
 <script>
+import {eventBus} from "../main.js";
+
 export default {
   name: 'Game',
   props: ['icon'],
@@ -6,16 +8,18 @@ export default {
   },
   methods: {
     handleKeyPress: function (e) {
-      const leftArrow = 37;
-      const rightArrow = 39;
-      const keyCode = e.keyCode;
-      if (keyCode === rightArrow) {
-        console.log("turning right");
-        this.racerXpos = (parseFloat(this.racerXpos) + 0.5) + '%';
-      }
-      if (keyCode === leftArrow) {
-        console.log("turning left");
-        this.racerXpos = (parseFloat(this.racerXpos) - 0.5) + '%';
+      if(!this.gameOver) {
+        const leftArrow = 37;
+        const rightArrow = 39;
+        const keyCode = e.keyCode;
+        if (keyCode === rightArrow) {
+          console.log("turning right");
+          this.racerXpos = (parseFloat(this.racerXpos) + 0.5) + '%';
+        }
+        if (keyCode === leftArrow) {
+          console.log("turning left");
+          this.racerXpos = (parseFloat(this.racerXpos) - 0.5) + '%';
+        }
       }
     },
 
@@ -26,6 +30,7 @@ export default {
       racerXpos: null,
       racerYpos: null,
       availableJumps: 0,
+      gameOver: false,
     }
   },
   mounted: function () {
@@ -34,7 +39,14 @@ export default {
     this.racerXpos = "40%";
     this.racerYpos = "5%";
   },
+  created: function() {
+    let _this = this;
+    eventBus.$on('game-over', function() {
+      _this.gameOver = true;
+    })
+  }
 }
+
 </script>
 
 <template>

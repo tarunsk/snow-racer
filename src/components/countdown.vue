@@ -1,4 +1,6 @@
 <script>
+import {eventBus} from "../main.js";
+
 export default {
   name: 'Countdown',
   props: ['duration'],
@@ -16,7 +18,7 @@ export default {
         _this.secondsLeft -= 1;
         if (_this.secondsLeft < 0) {
           clearInterval(_this.timer);
-          _this.$emit('game-over');
+          eventBus.$emit('game-over');
           return;
         }
         _this.updateTimer();

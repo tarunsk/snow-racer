@@ -8,6 +8,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 require('./style/style.css')
 require('./assets/img/toboggan.png')
 
+export const eventBus = new Vue();
+
 Vue.config.productionTip = false
 
 new Vue({
