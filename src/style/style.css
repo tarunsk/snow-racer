@@ -2,32 +2,21 @@ html, body {
   height: 100%;
 }
 
-.racetrack {
-  /* position: absolute; */
-}
-
-.racetrack svg {
-  /* position: absolute; */
-  /* text-align: center; */
-}
-
 .avatar {
   position: absolute;
+  bottom: 100px;
+  left: 50%;
 }
 
 .avatar svg {
   position: absolute;
-  height: 100px;
+  height: 50px;;
 }
 
 .menu-item {
   width: 20%;
   height: 300px;
   margin: 25px;
-}
-
-.menu-item {
-
 }
 
 .game-screen img {
@@ -52,25 +41,12 @@ html, body {
   height: fit-content;
 }
 
-.outer-track {
+.racetrack {
   position: absolute;
-  margin-top: 50%;
-  margin-left: 50%;
-  transform: translate(-50%,-50%);
-}
+  bottom: 0px!important;
+  padding: 50px;
 
-.inner-track {
-  position: absolute;
-  margin-top: 50%;
-  margin-left: 50%;
-  transform: translate(-50%,-50%);
 }
-
-/* .racetrack {
-  max-height: 80%;
-  max-width: 80%;
-  width: 80%;
-} */
 
 .racetrack svg {
   width: 100%;
