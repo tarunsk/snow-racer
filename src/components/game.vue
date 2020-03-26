@@ -73,6 +73,8 @@ export default {
   data: function() {
     return {
       graduation: require('@/assets/img/graduation.png'),
+      gradXpos: 0,
+      gradYpos: 0,
       racerXpos: null,
       racerYpos: null,
       racerSpeed: 1,
