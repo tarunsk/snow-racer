@@ -6,8 +6,12 @@ import '@fortawesome/fontawesome-free/js/all.js'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 require('./style/style.css')
+require('./assets/img/toboggan.png')
+
+export const eventBus = new Vue();
 
 Vue.config.productionTip = false
+// collision
 
 new Vue({
   render: h => h(App),
