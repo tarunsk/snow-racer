@@ -143,7 +143,7 @@ export default {
     </div>
 
     <div ref="winScreen" v-if="gameWin">
-      <h1> Diploma pic will go here lol </h1>
+      <img id="diploma" v-bind:src="require('@/assets/img/diploma.png')" />
     </div>
   </div>
 </template>

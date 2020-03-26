@@ -205,10 +205,10 @@ html, body {
 }
 
 /* Game Objects */
-#racer img {
+#diploma {
   position: absolute;
-  height: 50px;
-  width: 50px;
+  height: 500px;
+  width: 800px;
 }
 
 .paradeFloat {
