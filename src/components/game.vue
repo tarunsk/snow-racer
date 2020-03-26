@@ -1,6 +1,11 @@
 <script>
 import {eventBus} from "../main.js";
 
+const UP = 38;
+const DOWN = 40;
+const LEFT = 37;
+const RIGHT = 39;
+
 export default {
   name: 'Game',
   props: ['icon'],
@@ -45,27 +50,26 @@ export default {
     },
     handleKeyPress: function (e) {
       if(!this.gameOver) {
-        const upArrow = 38;
-        const downArrow = 40;
-        const leftArrow = 37;
-        const rightArrow = 39;
         const keyCode = e.keyCode;
-        if (keyCode === upArrow) {
-          console.log("moving forward");
-          this.racerYpos = (parseFloat(this.racerYpos) + this.racerSpeed) + '%';
-        }
-        if (keyCode === downArrow) {
-          console.log("moving backward");
-          this.racerYpos = (parseFloat(this.racerYpos) - this.racerSpeed) + '%';
-        }
-        if (keyCode === rightArrow) {
-          console.log("turning right");
-          this.racerXpos = (parseFloat(this.racerXpos) + this.racerSpeed) + '%';
-        }
-        if (keyCode === leftArrow) {
-          console.log("turning left");
-          this.racerXpos = (parseFloat(this.racerXpos) - this.racerSpeed) + '%';
-        }
+        this.moveAvatar(keyCode);
+      }
+    },
+    moveAvatar: function(direction) {
+      if (direction === UP) {
+        console.log("moving forward");
+        this.racerYpos = (parseFloat(this.racerYpos) + this.racerSpeed) + '%';
+      }
+      else if (direction === DOWN) {
+        console.log("moving backward");
+        this.racerYpos = (parseFloat(this.racerYpos) - this.racerSpeed) + '%';
+      }
+      else if (direction === RIGHT) {
+        console.log("turning right");
+        this.racerXpos = (parseFloat(this.racerXpos) + this.racerSpeed) + '%';
+      }
+      else if (direction === LEFT) {
+        console.log("turning left");
+        this.racerXpos = (parseFloat(this.racerXpos) - this.racerSpeed) + '%';
       }
     },
     generateRandomVal(min, max) {
@@ -93,6 +97,26 @@ export default {
         this.gameWin = true;
         clearInterval(this.objTimer);
         eventBus.$emit('game-win');
+      }
+    },
+    swipeHandler: function(direction) {
+      if(!this.gameOver) {
+        switch (direction) {
+          case "top":
+            this.moveAvatar(UP);
+            break;
+          case "bottom":
+            this.moveAvatar(DOWN);
+            break;
+          case "left":
+            this.moveAvatar(LEFT);
+            break;
+          case "right":
+            this.moveAvatar(RIGHT);
+            break;
+          default:
+            break;
+        }
       }
     }
   },
@@ -133,7 +157,7 @@ export default {
 </script>
 
 <template>
-  <div ref="gameBoard" class="container h-100 w-100 game-board">
+  <div ref="gameBoard" class="container h-100 w-100 game-board" v-touch:swipe="this.swipeHandler">
     <div ref="playGame" v-if="!gameWin">
       <img ref="graduation" class="graduation" v-bind:src="this.graduation" />
       <img v-bind:src="icon" ref="avatar" class="avatar" v-bind:style="{ bottom: this.racerYpos, left: this.racerXpos }" />
