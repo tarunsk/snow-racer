@@ -7,7 +7,7 @@ export default {
   components: {
   },
   methods: {
-    generateObject: function() {
+    generateNegObject: function() {
       let newItem = {
         id: this.latestObjId,
         src: require('@/assets/img/bluebook.png'),
@@ -23,6 +23,24 @@ export default {
         }
       }, 50);
       this.negItemList.push(newItem);
+      this.latestObjId++;
+    },
+    generatePosObject: function() {
+      let newItem = {
+        id: this.latestObjId,
+        src: require('@/assets/img/bluebook.png'),
+        xpos: this.generateRandomVal(10, 85) + '%',
+        ypos: 0,
+        timer: null,
+      }
+      newItem.timer = setInterval(function() {
+        newItem.ypos = (parseFloat(newItem.ypos) + 1) + '%';
+        if (parseFloat(newItem.ypos) > 85) {
+          clearInterval(newItem.timer);
+          return;
+        }
+      }, 50);
+      this.posItemList.push(newItem);
       this.latestObjId++;
     },
     handleKeyPress: function (e) {
@@ -90,6 +108,7 @@ export default {
       gameOver: false,
       gameWin: false,
       negItemList: [],
+      posItemList: [],
       latestObjId: 0,
       objTimer: null,
     }
@@ -99,7 +118,7 @@ export default {
     window.addEventListener('keydown', this.handleKeyPress);
     this.racerXpos = "40%";
     this.racerYpos = "5%";
-    this.objTimer = setInterval(this.generateObject, 500);
+    this.objTimer = setInterval(this.generateNegObject, 500);
     setInterval(this.itemCollision, 40);
   },
   created: function() {

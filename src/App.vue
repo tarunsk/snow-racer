@@ -46,6 +46,12 @@ export default {
           "name": "Spin",
           "value": require("@/assets/img/spin.png"),
           "img": "true"
+        },
+        {
+          "id": 3,
+          "name": "Blue Bus",
+          "value": require("@/assets/img/bluebus.png"),
+          "img": "true"
         }
       ],
       menuSelect: false,
