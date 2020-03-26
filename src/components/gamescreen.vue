@@ -12,6 +12,9 @@ export default {
   methods: {
     gameOver: function() {
 
+    },
+    gameWin: function() {
+
     }
   }
 }
@@ -21,7 +24,7 @@ export default {
   <div class="d-flex flex-row h-100">
     <div class="game-panel">
       <div class="opacity-4 game-backdrop" />
-      <Game v-bind:icon="icon" />
+      <Game v-bind:icon="icon" v-on:game-win="gameWin"/>
     </div>
     <div class="opacity-4 display-panel" style="background-color:white;">
       <Countdown v-bind:duration="duration" v-on:game-over="gameOver" />

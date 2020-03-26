@@ -9,6 +9,7 @@ export default {
         timeLeft: '0:00',
         secondsLeft: 0,
         timer: null,
+        gameWin: false,
       }
   },
   methods: {
@@ -36,6 +37,14 @@ export default {
     this.secondsLeft = parseInt(timeSplit[0]) * 60 + parseInt(timeSplit[1]);
     console.log(this.secondsLeft);
     this.startTimer();
+  },
+  created: function() {
+    let _this = this;
+    eventBus.$on('game-win', function() {
+      _this.gameWin = true;
+      clearInterval(_this.timer);
+      _this.timeLeft = "Congratulations!"
+    })
   }
 }
 </script>

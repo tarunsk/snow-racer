@@ -56,30 +56,39 @@ export default {
       return Math.floor(Math.random() * (max - min)) + min;
     },
     itemCollision: function() {
+      // Check item collisions
       for (let i=0; i < this.negItemList.length; i++) {
         // Player collides with negative item (racerYpos subtracted from 100 to get top pos)
         if (Math.abs(parseInt(this.negItemList[i].xpos) - parseInt(this.racerXpos)) < 4 &&
-            Math.abs(parseInt(this.negItemList[i].ypos) - (100 - parseInt(this.racerYpos))) < 4) {
+            Math.abs(parseInt(this.negItemList[i].ypos) - (100 - parseInt(this.racerYpos))) < 10) {
           this.negItemList.splice(i, 1);
         }
-        // Player collides with graduation - player wins
         // Negative item reaches bottom of screen
         if (parseInt(this.negItemList[i].ypos) > 85) {
           this.negItemList.splice(i, 1);
         }
+      }
+      // Check if player collides with graduation - player wins
+      if (parseInt(this.racerXpos) < 4 && parseInt(this.racerYpos) > 80) {
+        console.log("player wins!");
+        this.gameOver = true;
+        this.gameWin = true;
+        clearInterval(this.objTimer);
+        eventBus.$emit('game-win');
       }
     }
   },
   data: function() {
     return {
       graduation: require('@/assets/img/graduation.png'),
-      gradXpos: 0,
-      gradYpos: 0,
+      gradXpos: null,
+      gradYpos: null,
       racerXpos: null,
       racerYpos: null,
       racerSpeed: 1,
       availableJumps: 0,
       gameOver: false,
+      gameWin: false,
       negItemList: [],
       latestObjId: 0,
       objTimer: null,
@@ -109,7 +118,7 @@ export default {
     <img ref="graduation" class="graduation" v-bind:src="this.graduation" />
     <img v-bind:src="icon" ref="avatar" class="avatar" v-bind:style="{ bottom: this.racerYpos, left: this.racerXpos }" />
     <div v-for="item in negItemList" v-bind:key="item.id" class="obstacle">
-      <img v-bind:src="item.src" v-bind:id="item.id" v-bind:ref="item.id" v-bind:style="{ top: item.ypos, left: item.xpos }">
+      <img v-bind:src="item.src" v-bind:id="item.id" v-bind:ref="item.id" v-bind:style="{ top: item.ypos, left: item.xpos }"/>
     </div>
   </div>
 </template>
