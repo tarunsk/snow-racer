@@ -20,7 +20,7 @@ export default {
           this.racerXpos = (parseFloat(this.racerXpos) - 0.5) + '%';
         }
       }
-    },
+    }
   },
   data: function() {
     return {
