@@ -22,21 +22,31 @@ export default {
           return;
         }
       }, 50);
-      this.itemList.push(newItem);
+      this.negItemList.push(newItem);
       this.latestObjId++;
     },
     handleKeyPress: function (e) {
       if(!this.gameOver) {
+        const upArrow = 38;
+        const downArrow = 40;
         const leftArrow = 37;
         const rightArrow = 39;
         const keyCode = e.keyCode;
+        if (keyCode === upArrow) {
+          console.log("moving forward");
+          this.racerYpos = (parseFloat(this.racerYpos) + this.racerSpeed) + '%';
+        }
+        if (keyCode === downArrow) {
+          console.log("moving backward");
+          this.racerYpos = (parseFloat(this.racerYpos) - this.racerSpeed) + '%';
+        }
         if (keyCode === rightArrow) {
           console.log("turning right");
-          this.racerXpos = (parseFloat(this.racerXpos) + 0.5) + '%';
+          this.racerXpos = (parseFloat(this.racerXpos) + this.racerSpeed) + '%';
         }
         if (keyCode === leftArrow) {
           console.log("turning left");
-          this.racerXpos = (parseFloat(this.racerXpos) - 0.5) + '%';
+          this.racerXpos = (parseFloat(this.racerXpos) - this.racerSpeed) + '%';
         }
       }
     },
@@ -46,14 +56,16 @@ export default {
       return Math.floor(Math.random() * (max - min)) + min;
     },
     itemCollision: function() {
-      for (let i=0; i < this.itemList.length; i++) {
-        console.log(this.itemList[i].ypos);
-        if (this.itemList[i].xpos === this.racerXpos && this.itemList[i].ypos === this.racerYpos) {
-          console.log("collision")
-          this.itemList.splice(i, 1);
+      for (let i=0; i < this.negItemList.length; i++) {
+        // Player collides with negative item (racerYpos subtracted from 100 to get top pos)
+        if (Math.abs(parseInt(this.negItemList[i].xpos) - parseInt(this.racerXpos)) < 4 &&
+            Math.abs(parseInt(this.negItemList[i].ypos) - (100 - parseInt(this.racerYpos))) < 4) {
+          this.negItemList.splice(i, 1);
         }
-        if (parseInt(this.itemList[i].ypos) > 85) {
-          this.itemList.splice(i, 1);
+        // Player collides with graduation - player wins
+        // Negative item reaches bottom of screen
+        if (parseInt(this.negItemList[i].ypos) > 85) {
+          this.negItemList.splice(i, 1);
         }
       }
     }
@@ -63,9 +75,10 @@ export default {
       graduation: require('@/assets/img/graduation.png'),
       racerXpos: null,
       racerYpos: null,
+      racerSpeed: 1,
       availableJumps: 0,
       gameOver: false,
-      itemList: [],
+      negItemList: [],
       latestObjId: 0,
       objTimer: null,
     }
@@ -93,7 +106,7 @@ export default {
   <div ref="gameBoard" class="container h-100 w-100 game-board">
     <img ref="graduation" class="graduation" v-bind:src="this.graduation" />
     <img v-bind:src="icon" ref="avatar" class="avatar" v-bind:style="{ bottom: this.racerYpos, left: this.racerXpos }" />
-    <div v-for="item in itemList" v-bind:key="item.id" class="obstacle">
+    <div v-for="item in negItemList" v-bind:key="item.id" class="obstacle">
       <img v-bind:src="item.src" v-bind:id="item.id" v-bind:ref="item.id" v-bind:style="{ top: item.ypos, left: item.xpos }">
     </div>
   </div>
