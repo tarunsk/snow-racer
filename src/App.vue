@@ -2,8 +2,6 @@
 import Landing from './components/landing.vue'
 import Menu from './components/menu.vue'
 import GameScreen from './components/gamescreen.vue'
-// import Durations from './assets/durations.json'
-// import Icons from './assets/icons.json'
 
 export default {
   name: 'App',
@@ -60,6 +58,17 @@ export default {
       chosenIcon: null,
       racerXpos: 0,
       racerYpos: 0,
+    }
+  },
+  computed:{
+    originX(){
+        return this.x - this.width/2
+    },
+    originY(){
+        return this.y - this.height/2
+    },
+    transform(){
+        return `rotate(${this.angle} ${this.x} ${this.y})`
     }
   },
   methods: {
