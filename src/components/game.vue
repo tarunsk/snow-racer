@@ -1,12 +1,10 @@
 <script>
 import {eventBus} from "../main.js";
-import Player from "./player.vue"
 
 export default {
   name: 'Game',
   props: ['icon'],
   components: {
-    Player
   },
   methods: {
     generateObject: function() {
@@ -27,15 +25,44 @@ export default {
       this.itemList.push(newItem);
       this.latestObjId++;
     },
+    handleKeyPress: function (e) {
+      if(!this.gameOver) {
+        const leftArrow = 37;
+        const rightArrow = 39;
+        const keyCode = e.keyCode;
+        if (keyCode === rightArrow) {
+          console.log("turning right");
+          this.racerXpos = (parseFloat(this.racerXpos) + 0.5) + '%';
+        }
+        if (keyCode === leftArrow) {
+          console.log("turning left");
+          this.racerXpos = (parseFloat(this.racerXpos) - 0.5) + '%';
+        }
+      }
+    },
     generateRandomVal(min, max) {
       min = Math.ceil(min);
       max = Math.floor(max);
       return Math.floor(Math.random() * (max - min)) + min;
+    },
+    itemCollision: function() {
+      for (let i=0; i < this.itemList.length; i++) {
+        console.log(this.itemList[i].ypos);
+        if (this.itemList[i].xpos === this.racerXpos && this.itemList[i].ypos === this.racerYpos) {
+          console.log("collision")
+          this.itemList.splice(i, 1);
+        }
+        if (parseInt(this.itemList[i].ypos) > 85) {
+          this.itemList.splice(i, 1);
+        }
+      }
     }
   },
   data: function() {
     return {
       graduation: require('@/assets/img/graduation.png'),
+      racerXpos: null,
+      racerYpos: null,
       availableJumps: 0,
       gameOver: false,
       itemList: [],
@@ -44,7 +71,12 @@ export default {
     }
   },
   mounted: function () {
+    // add an event listener for keypress
+    window.addEventListener('keydown', this.handleKeyPress);
+    this.racerXpos = "40%";
+    this.racerYpos = "5%";
     this.objTimer = setInterval(this.generateObject, 500);
+    setInterval(this.itemCollision, 40);
   },
   created: function() {
     let _this = this;
@@ -60,9 +92,7 @@ export default {
 <template>
   <div ref="gameBoard" class="container h-100 w-100 game-board">
     <img ref="graduation" class="graduation" v-bind:src="this.graduation" />
-    <div class="player">
-      <Player v-collision="['groupOne']" v-bind:icon="icon"/>
-    </div>
+    <img v-bind:src="icon" ref="avatar" class="avatar" v-bind:style="{ bottom: this.racerYpos, left: this.racerXpos }" />
     <div v-for="item in itemList" v-bind:key="item.id" class="obstacle">
       <img v-bind:src="item.src" v-bind:id="item.id" v-bind:ref="item.id" v-bind:style="{ top: item.ypos, left: item.xpos }">
     </div>
