@@ -207,8 +207,8 @@ html, body {
 /* Game Objects */
 #diploma {
   position: absolute;
-  height: 500px;
-  width: 800px;
+  height: 50%;
+  width: 80%;
 }
 
 .paradeFloat {

@@ -1,4 +1,4 @@
-<script>
+parseFloat<script>
 import {eventBus} from "../main.js";
 
 export default {
@@ -77,17 +77,27 @@ export default {
       // Check item collisions
       for (let i=0; i < this.negItemList.length; i++) {
         // Player collides with negative item (racerYpos subtracted from 100 to get top pos)
-        if (Math.abs(parseInt(this.negItemList[i].xpos) - parseInt(this.racerXpos)) < 4 &&
-            Math.abs(parseInt(this.negItemList[i].ypos) - (100 - parseInt(this.racerYpos))) < 10) {
+        let avatarHeight = parseFloat(this.$refs.avatar.clientHeight);
+        let avatarWidth = parseFloat(this.$refs.avatar.clientWidth);
+        let gameWindowWidth = parseFloat(this.$refs.gameBoard.clientWidth);
+        let gameWindowHeight = parseFloat(this.$refs.gameBoard.clientHeight);
+        let avatarHeightPercent = (avatarHeight / gameWindowHeight) * 100;
+        let avatarWidthPercent = (avatarWidth / gameWindowWidth) * 100;
+        if (
+            (parseFloat(this.negItemList[i].xpos) > (parseFloat(this.racerXpos) - 4)) &&
+            (parseFloat(this.negItemList[i].xpos) < (parseFloat(this.racerXpos) + avatarWidthPercent + 4)) &&
+            (parseFloat(this.negItemList[i].ypos) > (100 - parseFloat(this.racerYpos) - avatarHeightPercent - 4)) &&
+            (parseFloat(this.negItemList[i].ypos) < (100 - parseFloat(this.racerYpos) + 4))
+          ) {
           this.negItemList.splice(i, 1);
         }
         // Negative item reaches bottom of screen
-        if (parseInt(this.negItemList[i].ypos) > 85) {
+        if (parseFloat(this.negItemList[i].ypos) > 85) {
           this.negItemList.splice(i, 1);
         }
       }
       // Check if player collides with graduation - player wins
-      if (parseInt(this.racerXpos) < 4 && parseInt(this.racerYpos) > 80) {
+      if (parseFloat(this.racerXpos) < 4 && parseFloat(this.racerYpos) > 80) {
         console.log("player wins!");
         this.gameOver = true;
         this.gameWin = true;
@@ -103,6 +113,8 @@ export default {
       gradYpos: null,
       racerXpos: null,
       racerYpos: null,
+      racerHeight: null,
+      racerWidth: null,
       racerSpeed: 1,
       availableJumps: 0,
       gameOver: false,
@@ -118,6 +130,8 @@ export default {
     window.addEventListener('keydown', this.handleKeyPress);
     this.racerXpos = "40%";
     this.racerYpos = "5%";
+    this.racerHeight = "7%";
+    this.racerWidth = "10%";
     this.objTimer = setInterval(this.generateNegObject, 500);
     setInterval(this.itemCollision, 40);
   },
@@ -136,7 +150,7 @@ export default {
   <div ref="gameBoard" class="container h-100 w-100 game-board">
     <div ref="playGame" v-if="!gameWin">
       <img ref="graduation" class="graduation" v-bind:src="this.graduation" />
-      <img v-bind:src="icon" ref="avatar" class="avatar" v-bind:style="{ bottom: this.racerYpos, left: this.racerXpos }" />
+      <img v-bind:src="icon" ref="avatar" class="avatar" v-bind:style="{ bottom: this.racerYpos, left: this.racerXpos, height: this.racerHeight, width: this.racerWidth }" />
       <div v-for="item in negItemList" v-bind:key="item.id" class="obstacle">
         <img v-bind:src="item.src" v-bind:id="item.id" v-bind:ref="item.id" v-bind:style="{ top: item.ypos, left: item.xpos }"/>
       </div>
