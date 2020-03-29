@@ -23,6 +23,7 @@ export default {
     setDisguise: function(val) {
       if(val === true) {
         eventBus.$emit('game-pause');
+        this.chosenURL = (this.chosenURL + 1) % this.hideURL.length;
       }
       console.log("Here");
       this.disguise = val;
@@ -31,7 +32,8 @@ export default {
   data: function() {
     return {
       disguise: false,
-      hideURL: "https://lobster.eecs.umich.edu/eecsoh/"
+      hideURL: ["https://lobster.eecs.umich.edu/eecsoh/", "https://www.annarbor.org/"],
+      chosenURL: 0,
     }
   }
 }
@@ -47,5 +49,5 @@ export default {
       <GamePanel v-bind:duration="duration" v-on:game-over="gameOver" v-on:disguise="setDisguise(true)" />
     </div>
   </div>
-  <Hide v-else v-on:unhide="setDisguise(false)" v-bind:hideURL="hideURL" />
+  <Hide v-else v-on:unhide="setDisguise(false)" v-bind:hideURL="hideURL[this.chosenURL]" />
 </template>
