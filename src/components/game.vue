@@ -147,6 +147,7 @@ export default {
       posItemList: [],
       latestObjId: 0,
       objTimer: null,
+      collisionTimer: null
     }
   },
   mounted: function () {
@@ -157,13 +158,17 @@ export default {
     this.racerHeight = "7%";
     this.racerWidth = "10%";
     this.objTimer = setInterval(this.generateNegObject, 500);
-    setInterval(this.itemCollision, 40);
+    this.collisionTimer = setInterval(this.itemCollision, 40);
   },
   created: function() {
     let _this = this;
     eventBus.$on('game-over', function() {
       _this.gameOver = true;
       clearInterval(_this.objTimer);
+    })
+    eventBus.$on('game-pause', function() {
+      clearInterval(_this.objTimer);
+      clearInterval(_this.collisionTimer);
     })
   }
 }
@@ -180,8 +185,8 @@ export default {
       </div>
     </div>
 
-    <div ref="winScreen" v-if="gameWin">
-      <img id="diploma" v-bind:src="require('@/assets/img/diploma.png')" />
+    <div ref="winScreen" class="col d-flex align-items-center justify-content-center" v-if="gameWin">
+      <img id="diploma" class="w-75" v-bind:src="require('@/assets/img/diploma.png')" />
     </div>
   </div>
 </template>
