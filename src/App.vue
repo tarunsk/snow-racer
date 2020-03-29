@@ -58,6 +58,7 @@ export default {
       chosenIcon: null,
       racerXpos: 0,
       racerYpos: 0,
+      highScore: undefined,
     }
   },
   computed:{
@@ -79,6 +80,17 @@ export default {
       this.chosenIcon = value;
       this.renderGame = true;
     },
+    resetGame(newHighScore) {
+      this.menuSelect = true;
+      this.renderGame = false;
+      this.chosenDuration = null;
+      this.chosenIcon = null;
+      this.racerXpos = 0;
+      this.racerYpos = 0;
+      console.log("here")
+      console.log(newHighScore);
+      this.highScore = newHighScore;
+    }
   },
   mounted: function () {
     // add an event listener for keypress
@@ -96,7 +108,7 @@ export default {
     <div class="row h-100 w-100 my-auto mx-auto track-select" v-if="menuSelect && !renderGame && chosenDuration !== null">
       <Menu v-for="icon in icons" v-bind:key="icon.id" v-bind:option="icon" v-on:chosen-option="setChosenIcon"/>
     </div>
-    <GameScreen v-if="renderGame" v-bind:duration="chosenDuration" v-bind:icon="chosenIcon"/>
+    <GameScreen v-if="renderGame" v-bind:bestTime="highScore" v-bind:duration="chosenDuration" v-bind:icon="chosenIcon" v-on:reset="resetGame"/>
   </div>
 </template>
 
