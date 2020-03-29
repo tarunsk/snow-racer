@@ -204,12 +204,6 @@ html, body {
   border-bottom: 1px dashed white;
 }
 
-/* Game Objects */
-#diploma {
-  position: absolute;
-  height: 50%;
-  width: 80%;
-}
 
 .paradeFloat {
   position: absolute;
