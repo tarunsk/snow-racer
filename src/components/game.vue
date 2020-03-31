@@ -13,6 +13,7 @@ export default {
   },
   methods: {
     generateNegObject: function() {
+      console.log('generating neg obj')
       let newItem = {
         id: this.latestObjId,
         src: require('@/assets/img/bluebook.png'),
@@ -31,13 +32,37 @@ export default {
       this.latestObjId++;
     },
     generatePosObject: function() {
-      let newItem = {
-        id: this.latestObjId,
-        src: require('@/assets/img/bluebook.png'),
-        xpos: this.generateRandomVal(10, 85) + '%',
-        ypos: 0,
-        timer: null,
+      console.log('generating pos obj')
+      let pic = this.generateRandomVal(0,3)
+      let newItem = {}
+      if (parseInt(pic) == 0) {
+        newItem = {
+          id: this.latestObjId,
+          src: require('@/assets/img/espresso_coffee.png'),
+          xpos: this.generateRandomVal(10, 85) + '%',
+          ypos: 0,
+          timer: null
+        }
       }
+      if (parseInt(pic) == 1) {
+        newItem = {
+          id: this.latestObjId,
+          src: require('@/assets/img/sw_coffee.png'),
+          xpos: this.generateRandomVal(10, 85) + '%',
+          ypos: 0,
+          timer: null
+        }
+      }
+      if (parseInt(pic) == 2) {
+        newItem = {
+          id: this.latestObjId,
+          src: require('@/assets/img/sb_coffee.png'),
+          xpos: this.generateRandomVal(10, 85) + '%',
+          ypos: 0,
+          timer: null
+        }
+      }
+
       newItem.timer = setInterval(function() {
         newItem.ypos = (parseFloat(newItem.ypos) + 1) + '%';
         if (parseFloat(newItem.ypos) > 85) {
@@ -45,6 +70,8 @@ export default {
           return;
         }
       }, 50);
+
+      console.log(newItem)
       this.posItemList.push(newItem);
       this.latestObjId++;
     },
@@ -56,8 +83,11 @@ export default {
     },
     moveAvatar: function(direction) {
       if (direction === UP) {
-        console.log("moving forward");
-        this.racerYpos = (parseFloat(this.racerYpos) + this.racerSpeed) + '%';
+        if (this.availableJumps > 0) {
+          console.log("moving forward");
+          this.racerYpos = (parseFloat(this.racerYpos) + this.racerSpeed) + '%';
+          this.availableJumps -= 1
+        }
       }
       else if (direction === DOWN) {
         console.log("moving backward");
@@ -78,15 +108,16 @@ export default {
       return Math.floor(Math.random() * (max - min)) + min;
     },
     itemCollision: function() {
-      // Check item collisions
+      let avatarHeight = parseFloat(this.$refs.avatar.clientHeight);
+      let avatarWidth = parseFloat(this.$refs.avatar.clientWidth);
+      let gameWindowWidth = parseFloat(this.$refs.gameBoard.clientWidth);
+      let gameWindowHeight = parseFloat(this.$refs.gameBoard.clientHeight);
+      let avatarHeightPercent = (avatarHeight / gameWindowHeight) * 100;
+      let avatarWidthPercent = (avatarWidth / gameWindowWidth) * 100;
+
+      // Check negative item collisions
       for (let i=0; i < this.negItemList.length; i++) {
         // Player collides with negative item (racerYpos subtracted from 100 to get top pos)
-        let avatarHeight = parseFloat(this.$refs.avatar.clientHeight);
-        let avatarWidth = parseFloat(this.$refs.avatar.clientWidth);
-        let gameWindowWidth = parseFloat(this.$refs.gameBoard.clientWidth);
-        let gameWindowHeight = parseFloat(this.$refs.gameBoard.clientHeight);
-        let avatarHeightPercent = (avatarHeight / gameWindowHeight) * 100;
-        let avatarWidthPercent = (avatarWidth / gameWindowWidth) * 100;
         if (
             (parseFloat(this.negItemList[i].xpos) > (parseFloat(this.racerXpos) - 4)) &&
             (parseFloat(this.negItemList[i].xpos) < (parseFloat(this.racerXpos) + avatarWidthPercent + 4)) &&
@@ -100,6 +131,25 @@ export default {
           this.negItemList.splice(i, 1);
         }
       }
+
+      // Check positive item collisions
+      for (let i=0; i < this.posItemList.length; i++) {
+        // Player collides with positive item (racerYpos subtracted from 100 to get top pos)
+        if (
+            (parseFloat(this.posItemList[i].xpos) > (parseFloat(this.racerXpos) - 4)) &&
+            (parseFloat(this.posItemList[i].xpos) < (parseFloat(this.racerXpos) + avatarWidthPercent + 4)) &&
+            (parseFloat(this.posItemList[i].ypos) > (100 - parseFloat(this.racerYpos) - avatarHeightPercent - 4)) &&
+            (parseFloat(this.posItemList[i].ypos) < (100 - parseFloat(this.racerYpos) + 4))
+          ) {
+          this.posItemList.splice(i, 1);
+          this.collectPosItem();
+        }
+        // Positive item reaches bottom of screen
+        if (parseFloat(this.posItemList[i].ypos) > 85) {
+          this.posItemList.splice(i, 1);
+        }
+      }
+
       // Check if player collides with graduation - player wins
       if (parseFloat(this.racerXpos) < 4 && parseFloat(this.racerYpos) > 80) {
         console.log("player wins!");
@@ -108,6 +158,10 @@ export default {
         clearInterval(this.objTimer);
         eventBus.$emit('game-win');
       }
+    },
+    collectPosItem: function() {
+      this.availableJumps += 1;
+      // emit collected signal to add to game panel
     },
     swipeHandler: function(direction) {
       if(!this.gameOver) {
@@ -158,6 +212,7 @@ export default {
     this.racerHeight = "7%";
     this.racerWidth = "10%";
     this.objTimer = setInterval(this.generateNegObject, 500);
+    this.objTimer = setInterval(this.generatePosObject, 500);
     this.collisionTimer = setInterval(this.itemCollision, 40);
   },
   created: function() {
@@ -181,6 +236,9 @@ export default {
       <img ref="graduation" class="graduation" v-bind:src="this.graduation" />
       <img v-bind:src="icon" ref="avatar" class="avatar" v-bind:style="{ bottom: this.racerYpos, left: this.racerXpos, height: this.racerHeight, width: this.racerWidth }" />
       <div v-for="item in negItemList" v-bind:key="item.id" class="obstacle">
+        <img v-bind:src="item.src" v-bind:id="item.id" v-bind:ref="item.id" v-bind:style="{ top: item.ypos, left: item.xpos }"/>
+      </div>
+      <div v-for="item in posItemList" v-bind:key="item.id" class="powerup">
         <img v-bind:src="item.src" v-bind:id="item.id" v-bind:ref="item.id" v-bind:style="{ top: item.ypos, left: item.xpos }"/>
       </div>
     </div>
