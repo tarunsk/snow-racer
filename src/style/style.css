@@ -26,8 +26,8 @@ html, body {
   bottom: 100%;
 }
 
-.obstacle img {
-  width: 25%;
+img.obstacle {
+  width: 10%;
   /* height: 10%; */
   position: absolute;
   top: 0px;
@@ -59,6 +59,7 @@ html, body {
   position: absolute;
   bottom: 0%;
   height: 10%;
+  width: 10%;
   z-index: 10;
   transform: rotate(90deg);
 }
