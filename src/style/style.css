@@ -33,9 +33,8 @@ img.obstacle {
   top: 0px;
 }
 
-.powerup img {
-  width: 30%;
-  height: 20%;
+img.powerup {
+  width: 12%;
   position: absolute;
   top: 0px;
 }

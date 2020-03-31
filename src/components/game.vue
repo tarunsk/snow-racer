@@ -71,7 +71,6 @@ export default {
         }
       }, 50);
 
-      console.log(newItem)
       this.posItemList.push(newItem);
       this.latestObjId++;
     },
@@ -83,7 +82,7 @@ export default {
     },
     moveAvatar: function(direction) {
       if (direction === UP) {
-        if (this.availableJumps > 0) {
+        if (direction === UP && ((parseFloat(this.racerYpos) + this.racerSpeed) <= 90) && this.availableJumps > 0) {
           console.log("moving forward");
           this.racerYpos = (parseFloat(this.racerYpos) + this.racerSpeed) + '%';
           this.availableJumps -= 1
@@ -108,6 +107,7 @@ export default {
       return Math.floor(Math.random() * (max - min)) + min;
     },
     itemCollision: function() {
+      // Check if player collides with negative item
       let i = this.negItemList.length -1;
       while (i >= 0) {
         if (parseFloat(this.negItemList[i].ypos) > 85) {
@@ -118,7 +118,20 @@ export default {
         }
         i--;
       }
-      
+
+      // Check if player collides with positive item
+      let j = this.posItemList.length -1;
+      while (j >= 0) {
+        if (parseFloat(this.posItemList[j].ypos) > 85) {
+          this.posItemList.splice(j, 1);
+        }
+        if (this.isOrWillCollide(this.$refs.avatar, this.$refs["pos"+this.posItemList[j].id][0], 0, 0)) {
+          this.posItemList.splice(j, 1);
+          this.collectPosItem();
+        }
+        j--;
+      }
+
       // Check if player collides with graduation - player wins
       if (this.isOrWillCollide(this.$refs.avatar, this.$refs.graduation, 0, 0)) {
         console.log("player wins!");
@@ -228,12 +241,8 @@ export default {
     <div ref="playGame" v-if="!gameWin">
       <img ref="graduation" class="graduation" v-bind:src="this.graduation" />
       <img v-bind:src="icon" ref="avatar" class="avatar" v-bind:style="{ bottom: this.racerYpos, left: this.racerXpos, height: this.racerHeight, width: this.racerWidth }" />
-      <div v-for="item in negItemList" v-bind:key="item.id" class="obstacle">
-        <img v-bind:src="item.src" v-bind:id="item.id" v-bind:ref="item.id" v-bind:style="{ top: item.ypos, left: item.xpos }"/>
-      </div>
-      <div v-for="item in posItemList" v-bind:key="item.id" class="powerup">
-        <img v-bind:src="item.src" v-bind:id="item.id" v-bind:ref="item.id" v-bind:style="{ top: item.ypos, left: item.xpos }"/>
-      </div>
+      <img v-for="item in negItemList" v-bind:key="item.id" class="obstacle" v-bind:src="item.src" v-bind:id="item.id" v-bind:ref="'neg'+item.id" v-bind:style="{ top: item.ypos, left: item.xpos }"/>
+      <img v-for="item in posItemList" v-bind:key="item.id" class="powerup" v-bind:src="item.src" v-bind:id="item.id" v-bind:ref="'pos'+item.id" v-bind:style="{ top: item.ypos, left: item.xpos }">
     </div>
 
     <div ref="winScreen" class="col d-flex align-items-center justify-content-center" v-if="gameWin">
