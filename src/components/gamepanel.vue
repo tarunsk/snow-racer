@@ -35,7 +35,7 @@ export default {
     <div class="container">
       <div class="row h-25">
         <div class="col">
-          <Countdown v-bind:duration="duration" v-on:game-over="gameOver" v-on:timer="calcScore"/>
+          <Countdown v-bind:duration="duration" v-on:timer="calcScore"/>
         </div>
       </div>
       <div class="row h-25">
