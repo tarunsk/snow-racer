@@ -33,6 +33,13 @@ img.obstacle {
   top: 0px;
 }
 
+.powerup img {
+  width: 30%;
+  height: 20%;
+  position: absolute;
+  top: 0px;
+}
+
 .game-panel {
   width: 65%;
   margin-left: 5%;
