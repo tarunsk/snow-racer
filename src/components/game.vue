@@ -106,6 +106,7 @@ export default {
         this.gameOver = true;
         this.gameWin = true;
         clearInterval(this.objTimer);
+        clearInterval(this.collisionTimer);
         eventBus.$emit('game-win');
       }
     },
@@ -165,6 +166,7 @@ export default {
     eventBus.$on('game-over', function() {
       _this.gameOver = true;
       clearInterval(_this.objTimer);
+      clearInterval(_this.collisionTimer);
     })
     eventBus.$on('game-pause', function() {
       clearInterval(_this.objTimer);
