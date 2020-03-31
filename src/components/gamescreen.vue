@@ -7,7 +7,7 @@ import {eventBus} from "../main.js";
 
 export default {
   name: 'GameScreen',
-  props: ['icon', 'duration'],
+  props: ['icon', 'duration', 'bestTime'],
   components: {
     Hide,
     GamePanel,
@@ -27,6 +27,10 @@ export default {
       }
       console.log("Here");
       this.disguise = val;
+    },
+    // I don't know how to get the emit's val inline so I'm doing this
+    bubbleUpReset(time) {
+      this.$emit('reset', time)
     }
   },
   data: function() {
@@ -46,7 +50,7 @@ export default {
       <Game v-bind:icon="icon" v-on:game-win="gameWin"/>
     </div>
     <div class="opacity-4 display-panel" style="background-color:white;">
-      <GamePanel v-bind:duration="duration" v-on:game-over="gameOver" v-on:disguise="setDisguise(true)" />
+      <GamePanel v-bind:bestTime="this.$props.bestTime" v-bind:duration="duration" v-on:game-over="gameOver" v-on:disguise="setDisguise(true)" v-on:reset="bubbleUpReset" />
     </div>
   </div>
   <Hide v-else v-on:unhide="setDisguise(false)" v-bind:hideURL="hideURL[this.chosenURL]" />

@@ -42,6 +42,8 @@ export default {
     let _this = this;
     eventBus.$on('game-win', function() {
       _this.gameWin = true;
+      // Send time left to calculate how much time it took to finish game.
+      _this.$emit("timer", _this.secondsLeft);
       clearInterval(_this.timer);
       _this.timeLeft = "Congratulations!"
     })
