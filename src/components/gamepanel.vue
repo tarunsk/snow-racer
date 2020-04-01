@@ -1,5 +1,6 @@
 <script>
 import Countdown from './countdown.vue'
+import {eventBus} from "../main.js";
 
 export default {
   name: 'GamePanel',
@@ -26,6 +27,20 @@ export default {
       console.log(time_str);
       return time_str;
     }
+  },
+  data() {
+    return {
+      numJumps: 0,
+    }
+  },
+  created() {
+    let _this = this;
+    eventBus.$on('add-jump', function() {
+      _this.numJumps += 1;
+    })
+    eventBus.$on('subtract-jump', function() {
+      _this.numJumps -= 1;
+    })
   }
 }
 
@@ -47,6 +62,9 @@ export default {
       </div>
       <div class="row h-25">
         <div class="col">
+          <!-- TODO: change width to percentage or something?? -->
+          <img v-bind:src="require('@/assets/img/espresso_coffee.png')" style="width:60px">
+          x {{this.numJumps}}
           <!-- <a class="btn btn-primary btn-lg" type="button" v-on:click="$emit('disguise')">Disguise</a> -->
         </div>
       </div>

@@ -13,7 +13,6 @@ export default {
   },
   methods: {
     generateNegObject: function() {
-      console.log('generating neg obj')
       let newItem = {
         id: this.latestObjId,
         src: require('@/assets/img/bluebook.png'),
@@ -86,6 +85,7 @@ export default {
           console.log("moving forward");
           this.racerYpos = (parseFloat(this.racerYpos) + this.racerSpeed) + '%';
           this.availableJumps -= 1
+          eventBus.$emit('subtract-jump');
         }
       }
       else if (direction === DOWN && ((parseFloat(this.racerYpos) + this.racerSpeed) >= 5)) {
@@ -145,6 +145,7 @@ export default {
     },
     collectPosItem: function() {
       this.availableJumps += 1;
+      eventBus.$emit('add-jump');
       // emit collected signal to add to game panel
      },
     isOrWillCollide: function (o1, o2, o1_xChange, o1_yChange) {
