@@ -137,7 +137,8 @@ export default {
         console.log("player wins!");
         this.gameOver = true;
         this.gameWin = true;
-        clearInterval(this.objTimer);
+        clearInterval(this.negObjTimer);
+        clearInterval(this.posObjTimer);
         clearInterval(this.collisionTimer);
         eventBus.$emit('game-win');
       }
@@ -205,7 +206,8 @@ export default {
       negItemList: [],
       posItemList: [],
       latestObjId: 0,
-      objTimer: null,
+      negObjTimer: null,
+      posObjTimer: null,
       collisionTimer: null
     }
   },
@@ -216,19 +218,23 @@ export default {
     this.racerYpos = "5%";
     this.racerHeight = "7%";
     this.racerWidth = "10%";
-    this.objTimer = setInterval(this.generateNegObject, 1000);
-    this.objTimer = setInterval(this.generatePosObject, 1000);
+    this.negObjTimer = setInterval(this.generateNegObject, 1000);
+    this.posObjTimer = setInterval(this.generatePosObject, 1000);
     this.collisionTimer = setInterval(this.itemCollision, 100);
   },
   created: function() {
     let _this = this;
     eventBus.$on('game-over', function() {
       _this.gameOver = true;
-      clearInterval(_this.objTimer);
+      clearInterval(_this.negObjTimer);
+      clearInterval(_this.posObjTimer);
       clearInterval(_this.collisionTimer);
+      _this.negItemList = []
+      _this.posItemList = []
     })
     eventBus.$on('game-pause', function() {
-      clearInterval(_this.objTimer);
+      clearInterval(_this.negObjTimer);
+      clearInterval(_this.posObjTimer);
       clearInterval(_this.collisionTimer);
     })
   }
