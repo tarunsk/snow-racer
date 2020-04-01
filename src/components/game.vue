@@ -81,16 +81,16 @@ export default {
     },
     moveAvatar: function(direction) {
       if (direction === UP) {
-        if (direction === UP && ((parseFloat(this.racerYpos) + this.racerSpeed) <= 90) && this.availableJumps > 0) {
+        if (direction === UP && ((parseFloat(this.racerYpos) + this.racerYSpeed) <= 90) && this.availableJumps > 0) {
           console.log("moving forward");
-          this.racerYpos = (parseFloat(this.racerYpos) + this.racerSpeed) + '%';
+          this.racerYpos = (parseFloat(this.racerYpos) + this.racerYSpeed) + '%';
           this.availableJumps -= 1
           eventBus.$emit('subtract-jump');
         }
       }
-      else if (direction === DOWN && ((parseFloat(this.racerYpos) + this.racerSpeed) >= 5)) {
+      else if (direction === DOWN && ((parseFloat(this.racerYpos) + this.racerYSpeed) > 10)) {
         console.log("moving backward");
-        this.racerYpos = (parseFloat(this.racerYpos) - this.racerSpeed) + '%';
+        this.racerYpos = (parseFloat(this.racerYpos) - this.racerYSpeed) + '%';
       }
       if (direction === RIGHT && ((parseFloat(this.racerXpos) + this.racerSpeed) <= 90)) {
         console.log("turning right");
@@ -151,8 +151,11 @@ export default {
      },
      hitNegItem: function() {
         // Pushes player down (equivalent to hitting the down arrow)
-        if ((parseFloat(this.racerYpos) + this.racerSpeed) >= 5) {
-          this.racerYpos = (parseFloat(this.racerYpos) - this.racerSpeed) + '%';
+        if ((parseFloat(this.racerYpos) + this.racerYSpeed) > 10) {
+          this.moveAvatar(DOWN);
+        }
+        else {
+          this.racerYpos = '5%';
         }
      },
     isOrWillCollide: function (o1, o2, o1_xChange, o1_yChange) {
@@ -208,6 +211,7 @@ export default {
       racerHeight: null,
       racerWidth: null,
       racerSpeed: 1,
+      racerYSpeed: 5,
       availableJumps: 0,
       gameOver: false,
       gameWin: false,
