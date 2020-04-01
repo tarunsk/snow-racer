@@ -115,6 +115,7 @@ export default {
         }
         if (this.isOrWillCollide(this.$refs.avatar, this.$refs["neg"+this.negItemList[i].id][0], 0, 0)) {
           this.negItemList.splice(i, 1);
+          this.hitNegItem();
         }
         i--;
       }
@@ -147,6 +148,12 @@ export default {
       this.availableJumps += 1;
       eventBus.$emit('add-jump');
       // emit collected signal to add to game panel
+     },
+     hitNegItem: function() {
+        // Pushes player down (equivalent to hitting the down arrow)
+        if ((parseFloat(this.racerYpos) + this.racerSpeed) >= 5) {
+          this.racerYpos = (parseFloat(this.racerYpos) - this.racerSpeed) + '%';
+        }
      },
     isOrWillCollide: function (o1, o2, o1_xChange, o1_yChange) {
       const o1D = { 'left': o1.getBoundingClientRect().left + o1_xChange,
