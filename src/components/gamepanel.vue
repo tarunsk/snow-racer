@@ -28,14 +28,8 @@ export default {
       return time_str;
     },
     togglePause() {
-      if (this.paused) {
-        eventBus.$emit('game-resume');
-        this.paused = false;
-      }
-      else {
-        eventBus.$emit('game-pause');
-        this.paused = true;
-      }
+      this.paused = !this.paused;
+      eventBus.$emit('game-pause-toggle');
     },
   },
   data() {

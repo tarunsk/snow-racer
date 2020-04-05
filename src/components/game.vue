@@ -13,6 +13,9 @@ export default {
   },
   methods: {
     generateNegObject: function() {
+      if (this.paused) {
+        return;
+     }
       let newItem = {
         id: this.latestObjId,
         src: require('@/assets/img/bluebook.png'),
@@ -20,7 +23,11 @@ export default {
         ypos: 0,
         timer: null,
       }
+      let _this = this;
       newItem.timer = setInterval(function() {
+        if (_this.paused) {
+          return;
+        }
         newItem.ypos = (parseFloat(newItem.ypos) + 1) + '%';
         if (parseFloat(newItem.ypos) > 85) {
           clearInterval(newItem.timer);
@@ -31,6 +38,9 @@ export default {
       this.latestObjId++;
     },
     generatePosObject: function() {
+      if (this.paused) {
+        return;
+      }
       console.log('generating pos obj')
       let pic = this.generateRandomVal(0,3)
       let newItem = {}
@@ -62,7 +72,11 @@ export default {
         }
       }
 
+      let _this = this;
       newItem.timer = setInterval(function() {
+        if (_this.paused) {
+          return;
+        }
         newItem.ypos = (parseFloat(newItem.ypos) + 1) + '%';
         if (parseFloat(newItem.ypos) > 85) {
           clearInterval(newItem.timer);
@@ -80,6 +94,9 @@ export default {
       }
     },
     moveAvatar: function(direction) {
+      if (this.paused) {
+        return;
+      }
       if (direction === UP) {
         if (direction === UP && ((parseFloat(this.racerYpos) + this.racerYSpeed) <= 90) && this.availableJumps > 0) {
           console.log("moving forward");
@@ -107,6 +124,9 @@ export default {
       return Math.floor(Math.random() * (max - min)) + min;
     },
     itemCollision: function() {
+      if (this.paused) {
+        return;
+      }
       // Check if player collides with negative item
       let i = this.negItemList.length -1;
       while (i >= 0) {
@@ -199,6 +219,9 @@ export default {
             break;
         }
       }
+    },
+    isPaused() {
+      return this.paused;
     }
   },
   data: function() {
@@ -220,7 +243,8 @@ export default {
       latestObjId: 0,
       negObjTimer: null,
       posObjTimer: null,
-      collisionTimer: null
+      collisionTimer: null,
+      paused: false,
     }
   },
   mounted: function () {
@@ -249,6 +273,9 @@ export default {
       clearInterval(_this.posObjTimer);
       clearInterval(_this.collisionTimer);
     })
+    eventBus.$on('game-pause-toggle', function() {
+      _this.paused = !_this.paused;
+    }) 
   }
 }
 
