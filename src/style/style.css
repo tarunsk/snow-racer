@@ -34,6 +34,13 @@ html, body {
   z-index: 10;
 }
 
+.row.card {
+  height: 200px;
+  padding: 100px;
+}
+
+.row-buffer { margin-top:200px; }
+
 .menu-item img {
   height: 40%;
 }
