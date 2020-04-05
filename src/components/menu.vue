@@ -11,13 +11,24 @@ export default {
       return "../assets/img/tracks/" + track.toLowerCase() + "/" + type;
     },
   },
+  computed: {
+    classType: function() {
+      if( screen.width <= 760 ) {
+          return "row card row-buffer my-auto bg-dark text-white menu-item opacity-5";
+      }
+      else {
+        alert("card my-auto bg-dark text-white menu-item opacity-5 col")
+          return "card my-auto bg-dark text-white menu-item opacity-5 col";
+      }
+    },
+  },
   props: ['option'],
 
 }
 </script>
 
 <template>
-<div class="card my-auto bg-dark text-white menu-item opacity-5 col">
+<div :class="classType">
     <div class="h-75 w-100 mx-auto my-auto thumbnail" v-if="option.img" style="text-align:center;">
         <img class="h-100 my-auto mx-auto" v-bind:src="option.value"/>
     </div>

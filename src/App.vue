@@ -70,6 +70,14 @@ export default {
     },
     transform(){
         return `rotate(${this.angle} ${this.x} ${this.y})`
+    },
+    isMobile: function() {
+      if( screen.width <= 760 ) {
+          return "col-12 my-auto mx-auto track-select";
+      }
+      else {
+          return "row h-100 w-100 my-auto mx-auto track-select";
+      }
     }
   },
   methods: {
@@ -102,11 +110,15 @@ export default {
 <template>
   <div ref="app" id="app" class="h-100 bg">
     <Landing class="h-100" v-if="!menuSelect" v-on:play-now="menuSelect=true"/>
-    <div class="row h-100 w-100 my-auto mx-auto track-select" v-if="menuSelect && (chosenDuration === null)">
-      <Menu v-for="duration in durations" v-bind:key="duration.id" v-bind:option="duration" v-on:chosen-option="setDuration"/>
+    <div class="container durations" v-if="menuSelect && (chosenDuration === null)">
+      <div :class="isMobile">
+        <Menu v-for="duration in durations" v-bind:key="duration.id" v-bind:option="duration" v-on:chosen-option="setDuration"/>
+      </div>
     </div>
-    <div class="row h-100 w-100 my-auto mx-auto track-select" v-if="menuSelect && !renderGame && chosenDuration !== null">
-      <Menu v-for="icon in icons" v-bind:key="icon.id" v-bind:option="icon" v-on:chosen-option="setChosenIcon"/>
+    <div class="container" v-if="menuSelect && !renderGame && chosenDuration !== null">
+      <div :class="isMobile" >
+        <Menu v-for="icon in icons" v-bind:key="icon.id" v-bind:option="icon" v-on:chosen-option="setChosenIcon"/>
+      </div>
     </div>
     <GameScreen v-if="renderGame" v-bind:bestTime="highScore" v-bind:duration="chosenDuration" v-bind:icon="chosenIcon" v-on:reset="resetGame"/>
   </div>
