@@ -17,7 +17,6 @@ export default {
           return "row card row-buffer my-auto bg-dark text-white menu-item opacity-5";
       }
       else {
-        alert("card my-auto bg-dark text-white menu-item opacity-5 col")
           return "card my-auto bg-dark text-white menu-item opacity-5 col";
       }
     },
