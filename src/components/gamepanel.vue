@@ -26,11 +26,16 @@ export default {
       let time_str = minutes + ':' + ((seconds < 10) ? '0' + seconds : seconds);
       console.log(time_str);
       return time_str;
-    }
+    },
+    togglePause() {
+      this.paused = !this.paused;
+      eventBus.$emit('game-pause-toggle');
+    },
   },
   data() {
     return {
       numJumps: 0,
+      paused: false,
     }
   },
   created() {
@@ -50,7 +55,7 @@ export default {
     <div class="container">
       <div class="row h-25">
         <div class="col">
-          <Countdown v-bind:duration="duration" v-on:timer="calcScore"/>
+          <Countdown v-bind:paused="paused" v-bind:duration="duration" v-on:timer="calcScore"/>
         </div>
       </div>
       <div class="row h-25">
@@ -71,6 +76,14 @@ export default {
       <div class="row h-25">
         <div class="col">
           <a class="btn btn-primary btn-lg" type="button" v-on:click="$emit('disguise')">Disguise</a>
+        </div>
+      </div>
+      <div class="row h-25">
+        <div v-if="this.paused" class="col">
+          <a class="btn btn-primary" type="button" v-on:click="togglePause()">Resume</a>
+        </div>
+        <div v-else class="col">
+          <a class="btn btn-primary" type="button" v-on:click="togglePause()">Pause</a>
         </div>
       </div>
 

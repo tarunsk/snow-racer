@@ -3,7 +3,7 @@ import {eventBus} from "../main.js";
 
 export default {
   name: 'Countdown',
-  props: ['duration'],
+  props: ['duration', 'paused'],
   data: function() {
       return {
         timeLeft: '0:00',
@@ -16,7 +16,10 @@ export default {
     startTimer: function() {
       let _this = this;
       this.timer = setInterval(function() {
-        _this.secondsLeft -= 1;
+        if (!_this.$props.paused) {
+          // only decrement timer if not paused
+          _this.secondsLeft -= 1;
+        }
         if (_this.secondsLeft < 0) {
           clearInterval(_this.timer);
           eventBus.$emit('game-over');
