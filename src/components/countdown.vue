@@ -52,5 +52,6 @@ export default {
 </script>
 
 <template>
-  <h1>{{timeLeft}}</h1>
+  <h1 v-if="!game-win">{{timeLeft}}</h1>
+  <h2 v-else>{{timeLeft}}</h2>
 </template>

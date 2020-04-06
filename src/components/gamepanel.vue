@@ -55,13 +55,6 @@ export default {
       </div>
       <div class="row h-25">
         <div class="col">
-          <p v-if="this.$props.bestTime">Best score: <br>{{humanizeTime(this.$props.bestTime)}}</p>
-          <a class="btn btn-primary btn-sml" type="button" v-on:click="$emit('reset', $props.bestTime)">Reset</a>
-          <!-- <a class="btn btn-primary btn-lg" type="button" v-on:click="$emit('disguise')">Disguise</a> -->
-        </div>
-      </div>
-      <div class="row h-25">
-        <div class="col">
           <!-- TODO: change width to percentage or something?? -->
           <img v-bind:src="require('@/assets/img/espresso_coffee.png')" style="width:60px">
           x {{this.numJumps}}
@@ -70,7 +63,14 @@ export default {
       </div>
       <div class="row h-25">
         <div class="col">
-          <a class="btn btn-primary btn-lg" type="button" v-on:click="$emit('disguise')">Disguise</a>
+          <p v-if="this.$props.bestTime">Best score: <br>{{humanizeTime(this.$props.bestTime)}}</p>
+          <a class="btn btn-primary btn-block" type="button" v-on:click="$emit('reset', $props.bestTime)">Reset</a>
+          <!-- <a class="btn btn-primary btn-lg" type="button" v-on:click="$emit('disguise')">Disguise</a> -->
+        </div>
+      </div>
+      <div class="row h-25">
+        <div class="col">
+          <a class="btn btn-primary btn-block" type="button" v-on:click="$emit('disguise')">Disguise</a>
         </div>
       </div>
 
