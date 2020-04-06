@@ -48,13 +48,13 @@ export default {
       // Send time left to calculate how much time it took to finish game.
       _this.$emit("timer", _this.secondsLeft);
       clearInterval(_this.timer);
-      _this.timeLeft = "Congratulations!"
+      _this.timeLeft = "Congrats!"
     })
   }
 }
 </script>
 
 <template>
-  <h1 v-if="gameWin">{{timeLeft}}</h1>
+  <p class="lead" style="font-size: 2rem;" v-if="gameWin">{{timeLeft}}</p>
   <p class="lead" style="font-size: 2rem;" v-else>{{timeLeft}}</p>
 </template>

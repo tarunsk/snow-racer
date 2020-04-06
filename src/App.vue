@@ -17,19 +17,19 @@ export default {
           id: 0,
           name: "0:30",
           value: "0:30",
-          img: false
+          img: false,
         },
         {
           id: 1,
           name: "1:00",
           value: "1:00",
-          img: false
+          img: false,
         },
         {
           id: 2,
           name: "5:00",
           value: "5:00",
-          img: false
+          img: false,
         }
       ],
       icons: [

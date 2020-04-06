@@ -8,7 +8,7 @@ const RIGHT = 39;
 
 export default {
   name: 'Game',
-  props: ['icon'],
+  props: ['icon', 'duration'],
   components: {
   },
   methods: {
@@ -50,7 +50,8 @@ export default {
           src: require('@/assets/img/espresso_coffee.png'),
           xpos: this.generateRandomVal(10, 85) + '%',
           ypos: 0,
-          timer: null
+          timer: null,
+          fade: null
         }
       }
       if (parseInt(pic) == 1) {
@@ -59,7 +60,8 @@ export default {
           src: require('@/assets/img/sw_coffee.png'),
           xpos: this.generateRandomVal(10, 85) + '%',
           ypos: 0,
-          timer: null
+          timer: null,
+          fade: null
         }
       }
       if (parseInt(pic) == 2) {
@@ -68,7 +70,8 @@ export default {
           src: require('@/assets/img/sb_coffee.png'),
           xpos: this.generateRandomVal(10, 85) + '%',
           ypos: 0,
-          timer: null
+          timer: null,
+          fade: null
         }
       }
 
@@ -90,10 +93,10 @@ export default {
     handleKeyPress: function (e) {
       if(!this.gameOver) {
         const keyCode = e.keyCode;
-        this.moveAvatar(keyCode);
+        this.moveAvatar(keyCode, this.racerSpeed);
       }
     },
-    moveAvatar: function(direction) {
+    moveAvatar: function(direction, speed) {
       if (this.paused) {
         return;
       }
@@ -109,13 +112,13 @@ export default {
         console.log("moving backward");
         this.racerYpos = (parseFloat(this.racerYpos) - this.racerYSpeed) + '%';
       }
-      if (direction === RIGHT && ((parseFloat(this.racerXpos) + this.racerSpeed) <= 90)) {
+      if (direction === RIGHT && ((parseFloat(this.racerXpos) + speed) <= 90)) {
         console.log("turning right");
-        this.racerXpos = (parseFloat(this.racerXpos) + this.racerSpeed) + '%';
+        this.racerXpos = (parseFloat(this.racerXpos) + speed) + '%';
       }
-      else if (direction === LEFT && ((parseFloat(this.racerXpos) + this.racerSpeed) >= 5)) {
+      else if (direction === LEFT && ((parseFloat(this.racerXpos) + speed) >= 5)) {
         console.log("turning left");
-        this.racerXpos = (parseFloat(this.racerXpos) - this.racerSpeed) + '%';
+        this.racerXpos = (parseFloat(this.racerXpos) - speed) + '%';
       }
     },
     generateRandomVal(min, max) {
@@ -131,11 +134,12 @@ export default {
       let i = this.negItemList.length -1;
       while (i >= 0) {
         if (parseFloat(this.negItemList[i].ypos) > 85) {
+          clearInterval(this.negItemList[i].timer);
+          clearInterval(this.negItemList[i].fade);
           this.negItemList.splice(i, 1);
         }
         if (this.isOrWillCollide(this.$refs.avatar, this.$refs["neg"+this.negItemList[i].id][0], 0, 0)) {
-          this.negItemList.splice(i, 1);
-          this.hitNegItem();
+          this.hitNegItem(i);
         }
         i--;
       }
@@ -144,11 +148,12 @@ export default {
       let j = this.posItemList.length -1;
       while (j >= 0) {
         if (parseFloat(this.posItemList[j].ypos) > 85) {
+          clearInterval(this.posItemList[j].timer);
+          clearInterval(this.posItemList[j].fade);
           this.posItemList.splice(j, 1);
         }
         if (this.isOrWillCollide(this.$refs.avatar, this.$refs["pos"+this.posItemList[j].id][0], 0, 0)) {
-          this.posItemList.splice(j, 1);
-          this.collectPosItem();
+          this.collectPosItem(j);
         }
         j--;
       }
@@ -164,19 +169,63 @@ export default {
         eventBus.$emit('game-win');
       }
     },
-    collectPosItem: function() {
+    collectPosItem: function(i) {
+      if(this.posItemList[i].fade != null) return;
       this.availableJumps += 1;
       eventBus.$emit('add-jump');
+
+      let elt = this.$refs["pos"+this.posItemList[i].id][0];
+      clearInterval(this.posItemList[i].timer);
+      elt.style.backgroundColor = 'blue';
+      elt.style.borderRadius = '50%';
+      elt.style.opacity = '1';
+      let _this = this;
+
+      this.posItemList[i].fade = setInterval(function() {
+        // console.log(elt.style.opacity);
+        elt.style.opacity = parseFloat(elt.style.opacity) - 0.2;
+        if (parseFloat(elt.style.opacity) <= 0) {
+          let j = _this.posItemList.length - 1;
+          while (j >= 0) {
+            if (_this.posItemList[j].id === parseInt(elt.id)) {
+              clearInterval(_this.posItemList[j].fade);
+              _this.posItemList.splice(j, 1);
+            }
+            j--;
+          }
+        }
+      },200);
       // emit collected signal to add to game panel
      },
-     hitNegItem: function() {
+     hitNegItem: function(i) {
+        if(this.negItemList[i].fade != null) return;
         // Pushes player down (equivalent to hitting the down arrow)
         if ((parseFloat(this.racerYpos) + this.racerYSpeed) > 10) {
-          this.moveAvatar(DOWN);
+          this.moveAvatar(DOWN, 0);
         }
         else {
           this.racerYpos = '5%';
         }
+        let elt = this.$refs["neg"+this.negItemList[i].id][0];
+        clearInterval(this.negItemList[i].timer);
+        elt.style.backgroundColor = 'yellow';
+        elt.style.borderRadius = '50%';
+        elt.style.opacity = '1';
+        let _this = this;
+        this.negItemList[i].fade = setInterval(function() {
+          // console.log(elt.style.opacity);
+          elt.style.opacity = parseFloat(elt.style.opacity) - 0.2;
+          if (parseFloat(elt.style.opacity) <= 0) {
+            let j = _this.negItemList.length - 1;
+            while (j >= 0) {
+              if (_this.negItemList[j].id === parseInt(elt.id)) {
+                clearInterval(_this.negItemList[j].fade);
+                _this.negItemList.splice(j, 1);
+              }
+              j--;
+            }
+          }
+        },200);
      },
     isOrWillCollide: function (o1, o2, o1_xChange, o1_yChange) {
       const o1D = { 'left': o1.getBoundingClientRect().left + o1_xChange,
@@ -204,16 +253,16 @@ export default {
       if(!this.gameOver) {
         switch (direction) {
           case "top":
-            this.moveAvatar(UP);
+            this.moveAvatar(UP, 10*this.racerSpeed);
             break;
           case "bottom":
-            this.moveAvatar(DOWN);
+            this.moveAvatar(DOWN, 10*this.racerSpeed);
             break;
           case "left":
-            this.moveAvatar(LEFT);
+            this.moveAvatar(LEFT, 10*this.racerSpeed);
             break;
           case "right":
-            this.moveAvatar(RIGHT);
+            this.moveAvatar(RIGHT, 10*this.racerSpeed);
             break;
           default:
             break;
@@ -248,14 +297,17 @@ export default {
     }
   },
   mounted: function () {
+    let timeSplit = this.$props.duration.split(":");
+    let secondsLeft = parseInt(((parseInt(timeSplit[0]) * 60 + parseInt(timeSplit[1]))/29)%6);
+    console.log(secondsLeft);
     // add an event listener for keypress
     window.addEventListener('keydown', this.handleKeyPress);
     this.racerXpos = "40%";
     this.racerYpos = "5%";
     this.racerHeight = "7%";
     this.racerWidth = "10%";
-    this.negObjTimer = setInterval(this.generateNegObject, 1000);
-    this.posObjTimer = setInterval(this.generatePosObject, 1000);
+    this.negObjTimer = setInterval(this.generateNegObject, 3000/secondsLeft);
+    this.posObjTimer = setInterval(this.generatePosObject, 1000*secondsLeft);
     this.collisionTimer = setInterval(this.itemCollision, 100);
   },
   created: function() {

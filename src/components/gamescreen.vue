@@ -47,7 +47,7 @@ export default {
   <div v-if="!disguise" class="d-flex flex-row h-100">
     <div class="game-panel">
       <div class="opacity-4 game-backdrop" />
-      <Game v-bind:icon="icon" v-on:game-win="gameWin"/>
+      <Game v-bind:icon="icon" v-bind:duration="duration" v-on:game-win="gameWin"/>
     </div>
     <div class="opacity-4 display-panel" style="background-color:white;">
       <GamePanel v-bind:bestTime="this.$props.bestTime" v-bind:duration="duration" v-on:game-over="gameOver" v-on:disguise="setDisguise(true)" v-on:reset="bubbleUpReset" />
