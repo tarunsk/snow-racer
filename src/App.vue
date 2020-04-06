@@ -110,13 +110,13 @@ export default {
 <template>
   <div ref="app" id="app" class="h-100 bg">
     <Landing class="h-100" v-if="!menuSelect" v-on:play-now="menuSelect=true"/>
-    <div class="container durations" v-if="menuSelect && (chosenDuration === null)">
-      <div :class="isMobile">
+    <div class="container h-100 w-100" style="padding: 0;" v-if="menuSelect && (chosenDuration === null)">
+      <div class="row h-100 w-100 mx-auto my-auto justify-content-center" style="margin:0;">
         <Menu v-for="duration in durations" v-bind:key="duration.id" v-bind:option="duration" v-on:chosen-option="setDuration"/>
       </div>
     </div>
-    <div class="container" v-if="menuSelect && !renderGame && chosenDuration !== null">
-      <div :class="isMobile" >
+    <div class="container h-100 w-100 my-auto" style="padding: 0;" v-if="menuSelect && !renderGame && chosenDuration !== null">
+      <div class="row h-100 w-100 mx-auto my-auto justify-content-center" style="margin:0;" >
         <Menu v-for="icon in icons" v-bind:key="icon.id" v-bind:option="icon" v-on:chosen-option="setChosenIcon"/>
       </div>
     </div>

@@ -275,7 +275,7 @@ export default {
     })
     eventBus.$on('game-pause-toggle', function() {
       _this.paused = !_this.paused;
-    }) 
+    })
   }
 }
 
@@ -285,12 +285,14 @@ export default {
   <div id="gameBoard" ref="gameBoard" class="container h-100 w-100 game-board" v-touch:swipe="this.swipeHandler">
     <div ref="playGame" v-if="!gameWin">
       <img ref="graduation" class="graduation" v-bind:src="this.graduation" />
-      <img v-bind:src="icon" ref="avatar" class="avatar" v-bind:style="{ bottom: this.racerYpos, left: this.racerXpos, height: this.racerHeight, width: this.racerWidth }" />
+      <div class="avatar-wrapper">
+        <img v-bind:src="icon" ref="avatar" class="avatar" v-bind:style="{ bottom: this.racerYpos, left: this.racerXpos }" />
+      </div>
       <img v-for="item in negItemList" v-bind:key="item.id" class="obstacle" v-bind:src="item.src" v-bind:id="item.id" v-bind:ref="'neg'+item.id" v-bind:style="{ top: item.ypos, left: item.xpos }"/>
       <img v-for="item in posItemList" v-bind:key="item.id" class="powerup" v-bind:src="item.src" v-bind:id="item.id" v-bind:ref="'pos'+item.id" v-bind:style="{ top: item.ypos, left: item.xpos }">
     </div>
 
-    <div ref="winScreen" class="col d-flex align-items-center justify-content-center" v-if="gameWin">
+    <div ref="winScreen" class="col h-100 d-flex align-items-center justify-content-center" v-if="gameWin">
       <img id="diploma" class="w-75" v-bind:src="require('@/assets/img/diploma.png')" />
     </div>
   </div>

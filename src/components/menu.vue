@@ -12,14 +12,14 @@ export default {
     },
   },
   computed: {
-    classType: function() {
-      if( screen.width <= 760 ) {
-          return "row card row-buffer my-auto bg-dark text-white menu-item opacity-5";
-      }
-      else {
-          return "card my-auto bg-dark text-white menu-item opacity-5 col";
-      }
-    },
+    // classType: function() {
+    //   if( screen.width <= 760 ) {
+    //       return "row card row-buffer my-auto bg-dark text-white menu-item opacity-5";
+    //   }
+    //   else {
+    //       return "card my-auto bg-dark text-white menu-item opacity-5 col";
+    //   }
+    // },
   },
   props: ['option'],
 
@@ -27,7 +27,7 @@ export default {
 </script>
 
 <template>
-<div :class="classType">
+<div class="card col-sm bg-dark text-white menu-item opacity-5 my-auto mx-2">
     <div class="h-75 w-100 mx-auto my-auto thumbnail" v-if="option.img" style="text-align:center;">
         <img class="h-100 my-auto mx-auto" v-bind:src="option.value"/>
     </div>

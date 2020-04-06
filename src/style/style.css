@@ -1,6 +1,7 @@
 html, body {
   height: 100%;
 }
+
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
   height: 80px;
@@ -76,6 +77,12 @@ img.powerup {
   height: 100%;
 }
 
+.panel-button {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 .display-panel {
   background-color: white;
   width: 25%;
@@ -96,10 +103,13 @@ img.powerup {
   transform: rotate(90deg);
 }
 
+.top15 {
+  margin-top: 15%;
+}
+
 .menu-item {
-  /* width: 200px; */
-  height: 300px;
-  margin: 25px;
+  width: 12rem;
+  height: 12rem;
 }
 
 .game-screen img {
@@ -192,8 +202,11 @@ img.powerup {
 
 .bg {
   background-image: url('../assets/img/background.jpg');
+  background-position: center;
   min-width: 350px;
   height: 100%;
+  background-repeat: repeat;
+  background-size: cover;
 }
 /* Main Containers */
 .outer-container {

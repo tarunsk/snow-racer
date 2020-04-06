@@ -36,6 +36,9 @@ export default {
     return {
       numJumps: 0,
       paused: false,
+      pause: require('../assets/img/pause.png'),
+      play: require('../assets/img/play.png'),
+      restart: require('../assets/img/restart.png')
     }
   },
   created() {
@@ -52,44 +55,22 @@ export default {
 </script>
 
 <template>
-    <div class="container">
-      <div class="row h-25">
-        <div class="col">
-          <Countdown v-bind:paused="paused" v-bind:duration="duration" v-on:timer="calcScore"/>
-        </div>
-      </div>
-      <div class="row h-25">
-        <div class="col">
-          <!-- TODO: change width to percentage or something?? -->
-          <img v-bind:src="require('@/assets/img/espresso_coffee.png')" style="width:60px">
-          x {{this.numJumps}}
-          <!-- <a class="btn btn-primary btn-lg" type="button" v-on:click="$emit('disguise')">Disguise</a> -->
-        </div>
-      </div>
-      <div class="row h-25">
-        <div class="col">
-          <p v-if="this.$props.bestTime">Best score: <br>{{humanizeTime(this.$props.bestTime)}}</p>
-        </div>
-      </div>
-      <div class="row h-25">
-        <div v-if="this.paused" class="col">
-          <a class="btn btn-primary btn-block" type="button" v-on:click="togglePause()">Resume</a>
-        </div>
-        <div v-else class="col">
-          <a class="btn btn-primary btn-block" type="button" v-on:click="togglePause()">Pause</a>
-        </div>
-      </div>
-      <div class="row h-25">
-        <div class="col">
-          <a class="btn btn-primary btn-block" type="button" v-on:click="$emit('reset', $props.bestTime)">Reset</a>
-          <!-- <a class="btn btn-primary btn-lg" type="button" v-on:click="$emit('disguise')">Disguise</a> -->
-        </div>
-      </div>
-      <div class="row h-25">
-        <div class="col">
-          <a class="btn btn-primary btn-block" type="button" v-on:click="$emit('disguise')">Disguise</a>
-        </div>
-      </div>
+    <div class="d-flex flex-column justify-content-center text-align-center h-100">
+          <Countdown class="my-auto" v-bind:paused="paused" v-bind:duration="duration" v-on:timer="calcScore"/>
+          <img class="mx-auto my-auto" v-bind:src="require('@/assets/img/espresso_coffee.png')" style="width:60%; margin-bottom=0;">
+          <p class="lead">x {{this.numJumps}}</p>
+          <p class="my-auto" v-if="this.$props.bestTime">Best score: <br>{{humanizeTime(this.$props.bestTime)}}</p>
+          <div class="row my-auto">
+            <div class="col">
+              <img v-if="this.paused" :src="this.play" style="width: 60%;" v-on:click="togglePause()">
+              <img :src="this.pause" style="width: 60%;" v-on:click="togglePause()" v-else>
+            </div>
+            <div class="col">
+              <img :src="this.restart" style="width: 60%;" v-on:click="$emit('reset', $props.bestTime)">
+            </div>
+          </div>
+          <!-- <a class="btn btn-primary btn-block panel-button my-auto" type="button" v-on:click="$emit('reset', $props.bestTime)">Reset</a> -->
+          <a class="btn btn-primary btn-block panel-button my-auto" type="button" v-on:click="$emit('disguise')">Disguise</a>
 
 
     </div>
