@@ -69,6 +69,18 @@ export default {
       <div class="row h-25">
         <div class="col">
           <p v-if="this.$props.bestTime">Best score: <br>{{humanizeTime(this.$props.bestTime)}}</p>
+        </div>
+      </div>
+      <div class="row h-25">
+        <div v-if="this.paused" class="col">
+          <a class="btn btn-primary btn-block" type="button" v-on:click="togglePause()">Resume</a>
+        </div>
+        <div v-else class="col">
+          <a class="btn btn-primary btn-block" type="button" v-on:click="togglePause()">Pause</a>
+        </div>
+      </div>
+      <div class="row h-25">
+        <div class="col">
           <a class="btn btn-primary btn-block" type="button" v-on:click="$emit('reset', $props.bestTime)">Reset</a>
           <!-- <a class="btn btn-primary btn-lg" type="button" v-on:click="$emit('disguise')">Disguise</a> -->
         </div>
@@ -78,14 +90,7 @@ export default {
           <a class="btn btn-primary btn-block" type="button" v-on:click="$emit('disguise')">Disguise</a>
         </div>
       </div>
-      <div class="row h-25">
-        <div v-if="this.paused" class="col">
-          <a class="btn btn-primary" type="button" v-on:click="togglePause()">Resume</a>
-        </div>
-        <div v-else class="col">
-          <a class="btn btn-primary" type="button" v-on:click="togglePause()">Pause</a>
-        </div>
-      </div>
+
 
     </div>
 </template>
