@@ -1,5 +1,6 @@
 parseFloat<script>
 import {eventBus} from "../main.js";
+import itemMenu from "./itemMenu.vue"
 
 const UP = 38;
 const DOWN = 40;
@@ -10,6 +11,7 @@ export default {
   name: 'Game',
   props: ['icon', 'duration'],
   components: {
+    itemMenu,
   },
   methods: {
     generateNegObject: function() {
@@ -271,7 +273,10 @@ export default {
     },
     isPaused() {
       return this.paused;
-    }
+    },
+    setIcon(value) {
+      this.avatar = value;
+    },
   },
   data: function() {
     return {
@@ -294,6 +299,8 @@ export default {
       posObjTimer: null,
       collisionTimer: null,
       paused: false,
+      slide1: require('../assets/img/slide1.png'),
+      avatar: this.icon,
     }
   },
   mounted: function () {
@@ -338,7 +345,7 @@ export default {
     <div ref="playGame" v-if="!gameWin">
       <img ref="graduation" class="graduation" v-bind:src="this.graduation" />
       <div class="avatar-wrapper">
-        <img v-bind:src="icon" ref="avatar" class="avatar" v-bind:style="{ bottom: this.racerYpos, left: this.racerXpos }" />
+        <img v-bind:src="avatar" ref="avatar" class="avatar" v-bind:style="{ bottom: this.racerYpos, left: this.racerXpos }" />
       </div>
       <img v-for="item in negItemList" v-bind:key="item.id" class="obstacle" v-bind:src="item.src" v-bind:id="item.id" v-bind:ref="'neg'+item.id" v-bind:style="{ top: item.ypos, left: item.xpos }"/>
       <img v-for="item in posItemList" v-bind:key="item.id" class="powerup" v-bind:src="item.src" v-bind:id="item.id" v-bind:ref="'pos'+item.id" v-bind:style="{ top: item.ypos, left: item.xpos }">
@@ -346,6 +353,11 @@ export default {
 
     <div ref="winScreen" class="col h-100 d-flex align-items-center justify-content-center" v-if="gameWin">
       <img id="diploma" class="w-75" v-bind:src="require('@/assets/img/diploma.png')" />
+    </div>
+    <div v-if="paused" class="jumbotron my-auto mx-auto d-flex flex-column align-items-center w-75">
+      <h2>Paused</h2>
+      <h4>Choose icon:</h4>
+      <itemMenu v-on:icon="setIcon"/>
     </div>
   </div>
 </template>
