@@ -300,3 +300,13 @@ img.powerup {
   margin-top: 25px;
   width: 100%;
 }
+html {
+    overflow: hidden;
+}
+
+body {
+    overflow: hidden;
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
