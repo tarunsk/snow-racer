@@ -347,5 +347,11 @@ export default {
     <div ref="winScreen" class="col h-100 d-flex align-items-center justify-content-center" v-if="gameWin">
       <img id="diploma" class="w-75" v-bind:src="require('@/assets/img/diploma.png')" />
     </div>
+    <div ref="overScreen" class="row h-100" style="text-align: center;" v-if="!gameWin && gameOver">
+      <span class="lead my-auto mx-auto">
+        <p style="font-size: 5rem;">Game Over</p><br />
+        <p style="font-size: 2rem;">Use the restart button in the panel on the right to try again!</p>
+      </span>
+    </div>
   </div>
 </template>
