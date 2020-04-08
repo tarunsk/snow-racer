@@ -55,6 +55,14 @@ export default {
 </script>
 
 <template>
-  <p class="lead" style="font-size: 2rem;" v-if="gameWin">{{timeLeft}}</p>
-  <p class="lead" style="font-size: 2rem;" v-else>{{timeLeft}}</p>
+  <p class="lead" v-bind:class="{'red': secondsLeft < 10}" style="font-size: 2rem;" v-if="gameWin">{{timeLeft}}</p>
+  <p class="lead" v-bind:class="{'red': secondsLeft < 10}" style="font-size: 2rem;" v-else>{{timeLeft}}</p>
 </template>
+
+<style scoped>
+.red {
+  color: red;
+  font-weight: bold;
+}
+
+</style>
